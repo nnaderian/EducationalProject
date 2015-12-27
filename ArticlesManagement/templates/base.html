@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'ArticlesManagement/css/bootstrap.css'%}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'ArticlesManagement/css/bootstrap.min.css'%}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'ArticlesManagement/css/style.css'%}" />
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>سیستم مدیریت نشریات</title>
+</head>
+
+<body>
+<div class="top-body">
+    <div id="titr" class="center-text" style="font-family: 'B Farnaz'; color: #595959; font-size: 38px;">
+        <font>
+                سیستم مدیریت نشریات و مقالات
+        </font>
+    </div>
+</div>
+<div class="middle-body">
+<div style="float: right" class="row">
+    <a href="/ArticlesManagement/" style="margin: 0">
+                            <b>
+                                صفحه اصلی
+                            </b>
+                        </a>
+                    <img src="{% static 'ArticlesManagement/images/13.jpg' %}" height="30px" width="30px" style="margin: 0">
+
+</div>
+{% block hello_block %}
+{% endblock %}
+<div class="row">
+<div class="col-md-1" >
+
+</div>
+<div class="col-md-10" >
+    {% block content %}
+    {% endblock %}
+</div>
+<div class="col-md-1" >
+</div>
+</div>
+
+</div>
+<!-- <div class="bottom-body">
+
+</div>
+-->
+
+</body>
+</html>

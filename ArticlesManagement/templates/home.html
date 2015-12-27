@@ -1,20 +1,58 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block hello_block %}
+    <div id="hello_container">
+    {% if user.is_authenticated %}
+        <div id="image_containrer" style="color:red; height: 100px; width:100px; float: right; margin: 20px">
+        <img src="{{ user.userprofile.picture.url }}" height="100px" width="100px"/>
+        </div>
+        <div dir="rtl" style="vertical-align: middle; padding: 30px 20px">
+        
+            <h4 style="font-family: 'B Nazanin'; width: 50%; display: inline" dir="rtl">
+            <b>
+            کاربر گرامی
+            {{ user.username }}
+            خوش آمدید
+            </b></h4>
+            <a href="logout"><b>
+                خروج از سایت
+            </b></a>
+        </div>
+        {% else %}
+        <div dir="rtl" style="vertical-align: middle; padding: 30px 20px">
+        <h4 style="font-family: 'B Nazanin'; width: 50%; display: inline" dir="rtl">
+        <b>
+            برای دسترسی به مقالات ابتدا وارد سایت شوید
+        </b>
+        </h4>
+            </br>
+
+            <a href="login"><b>
+                ورود
+            </b></a>
+            <a href="register">
+                <b>
+                    ثبت نام
+                </b>
+            </a>
+
+            </div>
+        {% endif %}
+</div>
+{% endblock %}
 {% block content %}
     <div align="center" >
-    <div id="link_container">
-
-    </div>
 
     <div id="table_container">
-    <div id="info" class="row" style="width: 90%;">
-        <div id="caption_container" class="col-md-3">
+    <div id="info" class="row">
+        <div class="col-md-3">
         {% if user.is_authenticated %}
         <a href="add_article" style="display: inline-block; font-size: medium; margin-right: 10px; color:#FF9933; font-family: 'B Titr'">
         ثبت مقاله ی جدید
         </a>
     {% endif %}
         </div>
-        <div class="col-md-6">
+        <div id="caption_container" class="col-md-6">
             <h4>
             لیست مقالات ثبت شده
         </h4>
@@ -36,16 +74,30 @@
             <th>
                 نوع مقاله
             </th>
+            {% if user.is_authenticated %}
+                <th>
+                حذف مقاله
+                </th>
+            {% endif %}
         </tr>
     {% for article in articles %}
         <tr>
         <td> {{ article.title }}</td>
         <td> {{ article.AuthorName }}</td>
-        <td> {{ article.publication_date}}</td>
+        <td> {{ article.publication_date }}</td>
         <td>
             {{ article.get_type_value }}
         </td>
+        {% if user.is_authenticated %}
+            <td>
+
+            <a href='delete_article/{{ article.id }}'>
+                <img src="{% static 'ArticlesManagement/images/15.png' %}" height="10px" width="10px">
+            </a>
+            </td>
+        {% endif %}
         </tr>
+
     {% endfor %}
     </table>
     </div>

@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^logout/$', views.user_logout),
     url(r'^add_article/$', views.add_article),
     url(r'^add_new_article/$', views.add_new_article),
+    url(r'^delete_article/(?P<pk>\d+)/$', views.delete_article)
 ]

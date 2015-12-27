@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render
 from .forms import UserForm, UserProfileForm, ArticleForm
 from django.template import RequestContext
@@ -26,7 +27,6 @@ def register(request):
         profile_form = UserProfileForm(request.POST, request.FILES)
 
         if user_form.is_valid() and profile_form.is_valid():
-            print 'all is valid'
             user = user_form.save()
             user.set_password(user.password)
             user.save()
@@ -39,8 +39,8 @@ def register(request):
 
             profile.save()
             registered = True
-        else:
-            print user_form.errors, profile_form.errors
+#        else:
+#           print user_form.errors, profile_form.errors
 
     else:
         user_form = UserForm()
@@ -51,6 +51,7 @@ def register(request):
 
 def user_login(request):
     context = RequestContext(request)
+    errors = ''
 
     if request.method == 'POST':
         username = request.POST['username']
@@ -62,12 +63,18 @@ def user_login(request):
                 login(request, user)
                 return HttpResponseRedirect('/ArticlesManagement/')
             else:
-                return HttpResponse("You account is disable")
+                errors = 'حساب شما غیرفعال می باشد'
+        elif username == '' or password == '':
+            errors = 'همه موارد باید تکمیل شوند'
         else:
-            return HttpResponse("Invalid Login details supplied")
+            errors = 'حسابی با این مشخصات موجود نمی باشد، دوباره تلاش کنید'
 
     else:
-        return render_to_response('login.html',{}, context)
+        username = ''
+        password = ''
+
+
+    return render_to_response('login.html',{'errors':errors}, context)
 
 def user_logout(request):
     context = RequestContext(request)
@@ -113,3 +120,7 @@ def add_new_article(request):
 def list_article(request):
     context = RequestContext(request)
 
+def delete_article(request, pk):
+    article = Article.objects.get(pk=pk)
+    article.delete()
+    return HttpResponseRedirect('/ArticlesManagement/')

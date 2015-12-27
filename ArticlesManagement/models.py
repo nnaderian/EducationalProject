@@ -39,7 +39,19 @@ class Article(models.Model):
         date_value = str(self.publication_date.day)
         print '1'
         print date_value
-        months = {'01': 'فروردین', '02': 'اردیبهشت' , '03':'خرداد' , '04': 'تیر', '05': 'مرداد', '06': 'شهریور', '07':'مهر', '08': 'آبان', '09':'آذر', '10':'دی', '11':'بهمن', '12':'اسفند',}
+        one = 'فروردین'
+        two = 'اردیبهشت'
+        three = 'خرداد'
+        four = 'تیر'
+        five = 'مرداد'
+        six = 'شهریور'
+        seven = 'مهر'
+        eight = 'آبان'
+        nine = 'آذر'
+        ten = 'دی'
+        eleven = 'بهمن'
+        twelve = "اسفند"
+        months = {'01': one , '02': two, '03': three , '04':four, '05':five, '06':six, '07':seven, '08':eight, '09':nine, '10':ten, '11':eleven, '12':twelve}
         date_value+=' '
         print '2'
         print self.publication_date.month
