@@ -12,6 +12,9 @@ class UserProfile(models.Model):
     birthdate = models.DateField()
     picture = models.ImageField(upload_to='profile_images')
 
+    def __unicode__(self):
+        return u'%s %s' %(self.first_name, self.last_name)
+
 class Article(models.Model):
     title = models.CharField(max_length=100)
     AuthorName = models.CharField(max_length=50)
@@ -34,35 +37,8 @@ class Article(models.Model):
         else:
             return 'سایر'
 
-    def get_publication_date_value(self):
-        print '**'
-        date_value = str(self.publication_date.day)
-        print '1'
-        print date_value
-        one = 'فروردین'
-        two = 'اردیبهشت'
-        three = 'خرداد'
-        four = 'تیر'
-        five = 'مرداد'
-        six = 'شهریور'
-        seven = 'مهر'
-        eight = 'آبان'
-        nine = 'آذر'
-        ten = 'دی'
-        eleven = 'بهمن'
-        twelve = "اسفند"
-        months = {'01': one , '02': two, '03': three , '04':four, '05':five, '06':six, '07':seven, '08':eight, '09':nine, '10':ten, '11':eleven, '12':twelve}
-        date_value+=' '
-        print '2'
-        print self.publication_date.month
-        print months
-
-        date_value+= months[self.publication_date.month]
-        print '%%'
-        print date_value
-        date_value+=' '
-        date_value+=str(self.publication_date.year)
-        return  date_value
+    def __unicode__(self):
+        return self.title
 
 
 

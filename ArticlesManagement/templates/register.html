@@ -5,24 +5,30 @@
             {% if registered %}
 
                 <strong style="font-size:20px">
-    از ثبت نام شما سپاسگزاریم
+                    از ثبت نام شما سپاسگزاریم
                 </strong>
                 </br>
                 </br>
                 <a href="/ArticlesManagement/">
-    بازگشت به صفحه اصلی
+                    <b>
+                        بازگشت به صفحه اصلی
+                    </b>
                 </a>
+                <a href="/ArticlesManagement/login/">
+                    <b>
+                        ورود به سامانه
+                    </b></a>
             {% else %}
-                <div id="info" class="row" style="width: 90%;">
-                <div class="col-md-3">
+                <div id="info" class="row">
+                    <div class="col-md-3">
+                    </div>
+                    <div id="caption_container" class="col-md-6">
+                        <h4>
+                            ثبت نام در سامانه
+                        </h4>
+                    </div>
+                    <div class="col-md-3"></div>
                 </div>
-                <div id="caption_container" class="col-md-6">
-                    <h4>
-        ثبت نام در سامانه
-                    </h4>
-                </div>
-                <div class="col-md-3"></div>
-            </div>
 
                 <form id="user_form" method="post" action="/ArticlesManagement/register/" enctype="multipart/form-data" dir="rtl" style="margin: 40px">
                     {% csrf_token %}
@@ -126,12 +132,12 @@
                     </div>
 
                     <div class="row form_field_container" style="margin-top: 20px" align="center" dir="rtl" >
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <input type="submit" value="ثبت نام" />
                         </div>
-                        <div class="col-md-3"></div>
+                        <div class="col-md-4"></div>
 
                     </div>
                 </form>

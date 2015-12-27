@@ -35,11 +35,15 @@ class UserProfileForm(forms.ModelForm):
     my_errors_default = {
         'required': 'فیلد اجباری'
     }
+    my_picture_errors = {
+        'required': 'فیلد اجباری',
+        'empty': 'عکس نباید خالی باشد'
+    }
     first_name = forms.CharField(error_messages=my_errors_default)
     last_name = forms.CharField(error_messages=my_errors_default)
     phone_number = forms.CharField(error_messages=my_errors_default)
     birthdate = forms.DateField(error_messages=my_errors_default)
-    picture = forms.FileField(error_messages=my_errors_default)
+    picture = forms.FileField(error_messages=my_picture_errors)
 
     def __init__(self, *args, **kwargs):
         super(UserProfileForm,self).__init__(*args,**kwargs)

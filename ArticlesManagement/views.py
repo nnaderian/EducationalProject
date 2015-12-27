@@ -8,7 +8,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from .models import Article
 from django.utils import timezone
-
+from django.views.generic.edit import DeleteView
+from django.core.urlresolvers import reverse_lazy
 # Create your views here.
 
 def home(request):
@@ -39,8 +40,6 @@ def register(request):
 
             profile.save()
             registered = True
-#        else:
-#           print user_form.errors, profile_form.errors
 
     else:
         user_form = UserForm()
@@ -88,8 +87,6 @@ def user_logout(request):
 
 def add_article(request):
     context = RequestContext(request)
-    print '!!'
-    print request.user.is_authenticated()
     if request.user.is_authenticated():
         return HttpResponseRedirect('/ArticlesManagement/add_new_article')
     else:
@@ -109,8 +106,6 @@ def add_new_article(request):
             article.save()
             return HttpResponseRedirect('/ArticlesManagement/')
 
-        else:
-            print article_form.errors
 
     else:
         article_form = ArticleForm()
@@ -124,3 +119,4 @@ def delete_article(request, pk):
     article = Article.objects.get(pk=pk)
     article.delete()
     return HttpResponseRedirect('/ArticlesManagement/')
+

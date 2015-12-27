@@ -1,64 +1,64 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div style="text-align: center">
+    <div class="center-text">
 
-    <div id="table_container">
+        <div id="table_container">
 
-        <div id="info" class="row" style="width: 90%">
-            <div class="col-md-3">
+            <div id="info" class="row">
+                <div class="col-md-3">
+                </div>
+                <div id="caption_container" class="col-md-6">
+                    <h4>
+                        ورود به سامانه مدیریت نشریات
+                    </h4>
+                </div>
+                <div class="col-md-3"></div>
             </div>
-            <div id="caption_container" class="col-md-6">
-                <h4>
-        ورود به سامانه مدیریت نشریات
-                </h4>
+
+            <div class="row" style="width: 90%; text-align: center; margin: auto; margin-top: 40px">
+                {% if errors != '' %}
+                    <p style="color: red">
+                        {{ errors }}
+                    </p>
+                {% endif %}
             </div>
-            <div class="col-md-3"></div>
-        </div>
 
-        <div class="row" style="width: 90%; text-align: center; margin: auto; margin-top: 40px">
-{% if errors != '' %}
-    <p style="color: red">
-    {{ errors }}
-    </p>
-{% endif %}
-</div>
+            <form id="login_form" method="post" action="/ArticlesManagement/login/" dir="rtl" style="margin: 10px">
+                {% csrf_token %}
+                <div class="row form_field_container" align="center" dir="rtl">
+                    <div class="center-text form_field_label_container col-md-4">
+                        نام کاربری
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" name="username" value="" dir="ltr">
+                    </div>
+                    <div class="col-md-4 error"></div>
 
-<form id="login_form" method="post" action="/ArticlesManagement/login/" dir="rtl" style="margin: 10px">
-    {% csrf_token %}
-    <div class="row form_field_container" align="center" dir="rtl">
-        <div class="center-text form_field_label_container col-md-4">
-            نام کاربری
-        </div>
-        <div class="col-md-4">
-            <input type="text" name="username" value="" dir="ltr">
-        </div>
-        <div class="col-md-4 error"></div>
+                </div>
+                <div class="row form_field_container" align="center" dir="rtl">
+                    <div class="center-text form_field_label_container col-md-4">
+                        رمز عبور
+                    </div>
+                    <div class="col-md-4">
+                        <input type="password" name="password" value="" dir="ltr">
+                    </div>
+                    <div class="col-md-4 error"></div>
 
+                </div>
+
+                <div class="row form_field_container" style="margin-top: 20px" align="center" dir="rtl">
+                    <div class="col-md-4">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="submit"   value="تایید"    />
+                    </div>
+                    <div class="col-md-4"></div>
+
+                </div>
+
+            </form>
+        </div>
     </div>
-    <div class="row form_field_container" align="center" dir="rtl">
-        <div class="center-text form_field_label_container col-md-4">
-            رمز عبور
-        </div>
-        <div class="col-md-4">
-            <input type="password" name="password" value="" dir="ltr">
-        </div>
-        <div class="col-md-4 error"></div>
-
-    </div>
-
-    <div class="row form_field_container" style="margin-top: 20px" align="center" dir="rtl">
-        <div class="col-md-3">
-        </div>
-        <div class="col-md-6">
-            <input type="submit"   value="تایید"    />
-        </div>
-        <div class="col-md-3"></div>
-
-    </div>
-
-</form>
-        </div>
-</div>
 
 {% endblock %}

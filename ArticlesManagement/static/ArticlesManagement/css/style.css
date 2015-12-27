@@ -13,7 +13,7 @@ body{
     border-radius: 3px;
     height: 150px;
     width:60%;
-    background-color: #40B2B2;
+    background-color: #40b2b2;
     align-content: center;
 }
 
@@ -50,6 +50,9 @@ body{
 #titr{
     height: inherit;
     padding-top: 40px;
+    font-family: 'B Farnaz';
+    color: #595959;
+    font-size: 38px;
 }
 
 div[class^="col-md-3"]{
@@ -162,6 +165,7 @@ tr > td:last-child{
     -webkit-box-shadow: inset 0 0 25px #F5FBFB;
     box-shadow: inset 0 0 25px #F5FBFB;
     border-radius: 10px;
+    font-family: "B Nazanin";
 }
 
 a{
@@ -210,4 +214,42 @@ input{
 
 .error{
     color: red;
+}
+
+input[type='submit']{
+    font-family: 'B Farnaz';
+    font-size: 14px;
+    color: #666666;
+}
+/*
+#hello_container > h4{
+    font-family: 'B Nazanin';
+    width: 50%;
+    display: inline;
+}*/
+
+.hello_options{
+    font-family: 'B Nazanin';
+    width: 50%;
+    display: inline;
+}
+
+.add_article_style{
+    display: inline-block;
+    font-size: medium;
+    margin-right: 10px;
+    color:#FF9933;
+    font-family: 'B Titr';
+}
+
+input[type=text]{
+    height: 30px;
+}
+
+select{
+    height: 30px;
+}
+
+input[type=date]{
+    height: 30px;
 }
