@@ -11,36 +11,35 @@
 </head>
 
 <body>
-<div class="top-body">
+<header class="top-body">
     <div id="titr" class="center-text">
-        <font>
-            سیستم مدیریت نشریات و مقالات
-        </font>
-    </div>
+    سیستم مدیریت نشریات و مقالات
 </div>
+</header>
+
 <div class="middle-body">
+{% if request.path != '/ArticlesManagement/' %}
     <div style="float: right" class="row">
         <a href="/ArticlesManagement/" style="margin: 0">
-            <b>
+            <strong>
                 صفحه اصلی
-            </b>
+            </strong>
         </a>
         <img src="{% static 'ArticlesManagement/images/13.jpg' %}" height="30px" width="30px" style="margin: 0">
 
     </div>
+{% endif %}
+
+    {% block errors %}
+    {% endblock %}
+
     {% block hello_block %}
     {% endblock %}
-    <div class="row">
-        <div class="col-md-1">
+    <main style="width:80%; margin: auto">
+        {% block content %}
+        {% endblock %}
+    </main>
 
-        </div>
-        <div class="col-md-10">
-            {% block content %}
-            {% endblock %}
-        </div>
-        <div class="col-md-1">
-        </div>
-    </div>
 
 </div>
 

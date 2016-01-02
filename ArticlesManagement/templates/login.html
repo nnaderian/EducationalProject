@@ -1,64 +1,56 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    <div class="center-text">
-
-        <div id="table_container">
-
-            <div id="info" class="row">
-                <div class="col-md-3">
-                </div>
-                <div id="caption_container" class="col-md-6">
-                    <h4>
-                        ورود به سامانه مدیریت نشریات
-                    </h4>
-                </div>
-                <div class="col-md-3"></div>
-            </div>
-
-            <div class="row" style="width: 90%; text-align: center; margin: auto; margin-top: 40px">
-                {% if errors != '' %}
-                    <p style="color: red">
-                        {{ errors }}
-                    </p>
-                {% endif %}
-            </div>
-
-            <form id="login_form" method="post" action="/ArticlesManagement/login/" dir="rtl" style="margin: 10px">
+        <div id="table_container" dir="rtl" align="center">
+            <form id="login_form" method="post" action="" dir="rtl" style="margin: 10px">
                 {% csrf_token %}
-                <div class="row form_field_container" align="center" dir="rtl">
-                    <div class="center-text form_field_label_container col-md-4">
-                        نام کاربری
-                    </div>
-                    <div class="col-md-4">
-                        <input type="text" name="username" value="" dir="ltr">
-                    </div>
-                    <div class="col-md-4 error"></div>
+                <table class="form_table">
+                    <caption align="center" class="table_caption">
+                        ورود به سامانه مدیریت نشریات
+                    </caption>
+                        {% if errors != '' %}
+                            <tr style="color:red">
+                                <th style="border-width: 0">
 
-                </div>
-                <div class="row form_field_container" align="center" dir="rtl">
-                    <div class="center-text form_field_label_container col-md-4">
-                        رمز عبور
-                    </div>
-                    <div class="col-md-4">
-                        <input type="password" name="password" value="" dir="ltr">
-                    </div>
-                    <div class="col-md-4 error"></div>
+                                </th>
+                            <td style="border-width: 0">
+                                {{ errors }}
+                            </td>
+                            </tr>
 
-                </div>
+                        {% endif %}
 
-                <div class="row form_field_container" style="margin-top: 20px" align="center" dir="rtl">
-                    <div class="col-md-4">
-                    </div>
-                    <div class="col-md-4">
-                        <input type="submit"   value="تایید"    />
-                    </div>
-                    <div class="col-md-4"></div>
-
-                </div>
+                    <tbody>
+                    <tr>
+                        <th>
+                            <label for="username">
+                            نام کاربری
+                        </label>
+                        </th>
+                        <td>
+                            <input type="text" name="username" id="username" value="" dir="ltr">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label for="password">
+                            رمز عبور
+                        </label></th>
+                        <td>
+                            <input type="password" name="password" id="password" value="" dir="ltr">
+                        </td>
+                    </tr>
+                    <input type="hidden" name="next" value="{{ next }}">
+                    <tr>
+                        <th style="border-width: 0"></th>
+                        <td style="border-width: 0">
+                            <input style="width: 170px" type="submit"   value="تایید"    />
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
 
             </form>
         </div>
-    </div>
 
 {% endblock %}

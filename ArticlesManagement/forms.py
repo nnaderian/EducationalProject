@@ -5,76 +5,66 @@ from django.contrib.auth.models import User
 
 
 class UserForm(forms.ModelForm):
-    my_username_errors = {
-        'required': 'فیلد اجباری',
-        'invalid': 'نامعتبر',
-        'unique': 'نام کاربری تکراری'
-    }
-    my_errors_default = {
-        'required': 'فیلد اجباری'
-    }
 
-    username = forms.CharField(error_messages=my_username_errors)
-    password = forms.CharField(error_messages=my_errors_default,widget=forms.PasswordInput())
-    email = forms.CharField(error_messages=my_errors_default)
+    my_default_errors = {
+        'required': 'قسمت اجباری',
+        'invalid': 'نامعتبر',
+        'unique': 'تکراری'
+    }
+    first_name = forms.CharField(required=True, error_messages=my_default_errors)
+    last_name = forms.CharField(required=True, error_messages=my_default_errors)
+    email = forms.EmailField(required=True, error_messages=my_default_errors)
 
     def __init__(self, *args, **kwargs):
-        super(UserForm,self).__init__(*args,**kwargs)
+        super(UserForm, self).__init__(*args, **kwargs)
         self.fields['username'].label = 'نام کاربری'
         self.fields['password'].label = 'رمز عبور'
         self.fields['email'].label = 'پست الکترونیک'
-
-
-
+        self.fields['first_name'].label = 'نام'
+        self.fields['last_name'].label = 'نام خانوادگی'
+        self.fields['username'].help_text = None
 
     class Meta:
         model = User
-        fields = ('username' , 'email' , 'password')
+        fields = ('username', 'first_name', 'last_name', 'email', 'password')
+        widgets = {
+            'password': forms.PasswordInput()
+        }
+        error_messages = {}
+        error_messages.update(dict.fromkeys(['username', 'password'], {
+            'required': 'قسمت اجباری',
+            'invalid': 'نامعتبر',
+            'unique': 'تکراری'
+        }))
+
 
 class UserProfileForm(forms.ModelForm):
-    my_errors_default = {
-        'required': 'فیلد اجباری'
-    }
-    my_picture_errors = {
-        'required': 'فیلد اجباری',
-        'empty': 'عکس نباید خالی باشد'
-    }
-    first_name = forms.CharField(error_messages=my_errors_default)
-    last_name = forms.CharField(error_messages=my_errors_default)
-    phone_number = forms.CharField(error_messages=my_errors_default)
-    birthdate = forms.DateField(error_messages=my_errors_default)
-    picture = forms.FileField(error_messages=my_picture_errors)
-
-    def __init__(self, *args, **kwargs):
-        super(UserProfileForm,self).__init__(*args,**kwargs)
-        self.fields['first_name'].label = 'نام'
-        self.fields['last_name'].label = 'نام خانوادگی'
-        self.fields['phone_number'].label = 'شماره تماس'
-        self.fields['birthdate'].label = 'تاریخ تولد'
-        self.fields['picture'].label = 'عکس خود را آپلود کنید'
-
-
+    forms.DateInput.input_type = "date"
+    phone_number = forms.CharField(required=False, label=UserProfile._meta.get_field_by_name('phone_number')[0].
+                                   verbose_name)
+    picture = forms.FileField(required=False, label=UserProfile._meta.get_field_by_name('picture')[0].verbose_name)
 
     class Meta:
         model = UserProfile
-        fields = ('first_name', 'last_name', 'phone_number', 'birthdate', 'picture')
+        fields = ('phone_number', 'birthdate', 'picture')
+        error_messages = {
+            'birthdate': {
+                'required': 'قسمت اجباری',
+                'empty': 'نباید خالی باشد'
+            }
+        }
+
 
 class ArticleForm(forms.ModelForm):
-    my_errors_default = {
-        'required': 'فیلد اجباری'
-    }
-    title = forms.CharField(error_messages=my_errors_default)
-    AuthorName = forms.CharField(error_messages=my_errors_default)
-    publication_date = forms.DateField(error_messages=my_errors_default)
 
-
-    def __init__(self, *args, **kwargs):
-        super(ArticleForm,self).__init__(*args, **kwargs)
-        self.fields['title'].label = 'عنوان مقاله'
-        self.fields['AuthorName'].label = 'نام نویسنده'
-        self.fields['type'].label = 'نوع مقاله'
-        self.fields['publication_date'].label = 'تاریخ انتشار'
+    forms.DateInput.input_type = "date"
 
     class Meta:
         model = Article
         fields = ('title', 'AuthorName', 'type', 'publication_date')
+        error_messages = {}
+        error_messages.update(dict.fromkeys(['title', 'AuthorName', 'type', 'publication_date'], {
+            'required': 'قسمت اجباری',
+            'invalid': 'نامعتبر',
+            'unique': 'تکراری'
+        }))

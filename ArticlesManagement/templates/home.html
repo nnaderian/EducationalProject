@@ -1,10 +1,19 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block errors %}
+    {% if errors %}
+        <div id="error_div" align="center">
+        <p>
+        {{ errors }}
+        </p>
+        </div>
+    {% endif %}
+{% endblock %}
 {% block hello_block %}
     <div id="hello_container">
         {% if user.is_authenticated %}
             <div id="image_containrer" style="float: right; margin: 20px">
-                {% if user.userprofile %}
+                {% if user.userprofile and user.userprofile.picture.url  %}
                     <img src="{{ user.userprofile.picture.url}}" height="100px" width="100px"/>
                 {% else %}
                     <img src="{% static "ArticlesManagement/images/DefaultUser.jpg" %}" height="100px" width="100px">
@@ -13,59 +22,57 @@
             <div dir="rtl" style="vertical-align: middle; padding: 30px 20px">
 
                 <h4 dir="rtl" class="hello_options">
-                    <b>
+                    <strong>
                         کاربر گرامی
                         {{ user.username }}
                         خوش آمدید
-                    </b></h4>
-                <a href="logout" style="display: block"><b>
+                    </strong></h4>
+                <a href="{% url 'ArticlesManagement.views.user_logout' %}" style="display: block">
+                    <strong>
                     خروج از سایت
-                </b></a>
+                </strong>
+                </a>
             </div>
 
         {% else %}
             <div dir="rtl" style="vertical-align: middle; padding: 30px 20px">
                 <h4 dir="rtl" class="hello_options">
-                    <b>
+                    <strong>
                         برای دسترسی به مقالات ابتدا وارد سایت شوید
-                    </b>
+                    </strong>
                 </h4>
-                </br>
+                <br>
 
-                <a href="login"><b>
+                <a href="{% url 'ArticlesManagement.views.user_login' %}"><strong>
                     ورود
-                </b></a>
-                <a href="register">
-                    <b>
+                </strong></a>
+                <a href="{% url 'ArticlesManagement.views.register' %}">
+                    <strong>
                         ثبت نام
-                    </b>
+                    </strong>
                 </a>
 
             </div>
         {% endif %}
     </div>
 {% endblock %}
+
 {% block content %}
     <div align="center" >
-
+        {% if user.is_authenticated %}
         <div id="table_container">
-            <div id="info" class="row">
+
+           <div id="info" class="row">
                 <div class="col-md-3">
-                    {% if user.is_authenticated %}
-                        <a href="add_article" class="add_article_style">
+                    <a href="{% url 'ArticlesManagement.views.add_article' %}" class="add_article_style">
                             ثبت مقاله ی جدید
-                        </a>
-                    {% endif %}
-                </div>
-                <div id="caption_container" class="col-md-6">
-                    <h4>
-                        لیست مقالات ثبت شده
-                    </h4>
-                </div>
-                <div class="col-md-3"></div>
+                    </a>
 
             </div>
             <table dir="rtl">
+            <caption align="center" class="table_caption">
+                لیست مقالات ثبت شده
+            </caption>
                 <tr>
                     <th>
                         عنوان مقاله
@@ -79,11 +86,10 @@
                     <th>
                         نوع مقاله
                     </th>
-                    {% if user.is_authenticated %}
-                        <th>
+                    <th>
                             حذف مقاله
-                        </th>
-                    {% endif %}
+                    </th>
+
                 </tr>
                 {% for article in articles %}
                     <tr>
@@ -93,21 +99,21 @@
                         <td>
                             {{ article.get_type_value }}
                         </td>
-                        {% if user.is_authenticated %}
-                            <td>
-                                <a href='delete_article/{{ article.id }}' onclick="return confirm('آیا از حذف این مقاله مطمئن هستید؟')">
-                                    <img src="{% static 'ArticlesManagement/images/15.png' %}" height="10px" width="10px">
-                                </a>
-                            </td>
-                        {% endif %}
+                        <td>
+                            <a href='delete_article/{{ article.id }}' onclick="return confirm('آیا از حذف این مقاله مطمئن هستید؟')">
+                                <img src="{% static 'ArticlesManagement/images/15.png' %}" height="10px" width="10px">
+                            </a>
+                        </td>
+
                     </tr>
 
                 {% endfor %}
             </table>
+
         </div>
+        {% endif %}
 
     </div>
 
 
 {% endblock %}
-

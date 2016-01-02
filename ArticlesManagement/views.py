@@ -1,27 +1,26 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render
 from .forms import UserForm, UserProfileForm, ArticleForm
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from .models import Article
 from django.utils import timezone
-from django.views.generic.edit import DeleteView
-from django.core.urlresolvers import reverse_lazy
-# Create your views here.
+from django.contrib.auth.decorators import login_required
+
 
 def home(request):
     context = RequestContext(request)
-    articles = Article.objects.all().order_by('-created_date')
-    return render_to_response('home.html',{'articles': articles}, context)
+    tmp_error = request.session.get('error', False)
 
-@csrf_protect
+    request.session['error'] = ''
+    articles = Article.objects.filter(creator_id=request.user.id).order_by('-created_date')
+    return render_to_response('home.html', {'articles': articles, 'errors': tmp_error}, context)
+
+
 def register(request):
     context = RequestContext(request)
     registered = False
-
 
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
@@ -42,24 +41,42 @@ def register(request):
             registered = True
 
     else:
+        if request.user.is_authenticated():
+            error = 'برای ثبت نام مجدد باید از این حساب کاربری خارج شوید'
+            request.session['error'] = error
+            return HttpResponseRedirect('/ArticlesManagement/')
         user_form = UserForm()
         profile_form = UserProfileForm()
 
-    return render_to_response('register.html', {'user_form': user_form, 'profile_form': profile_form, 'registered':registered}, context)
+    return render_to_response('register.html', {'user_form': user_form, 'profile_form': profile_form,
+                                                'registered': registered}, context)
 
 
 def user_login(request):
     context = RequestContext(request)
     errors = ''
 
-    if request.method == 'POST':
+    if request.method == 'GET':
+        username = ''
+        password = ''
+        if request.GET.get('next'):
+            next = request.GET['next']
+        else:
+            next = ''
+
+
+    elif request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
 
         user = authenticate(username=username, password=password)
+        next = request.POST['next']
         if user:
             if user.is_active:
                 login(request, user)
+
+                if next != '':
+                    return HttpResponseRedirect(next)
                 return HttpResponseRedirect('/ArticlesManagement/')
             else:
                 errors = 'حساب شما غیرفعال می باشد'
@@ -68,32 +85,24 @@ def user_login(request):
         else:
             errors = 'حسابی با این مشخصات موجود نمی باشد، دوباره تلاش کنید'
 
-    else:
-        username = ''
-        password = ''
+    return render_to_response('login.html', {'errors': errors, 'next': next, 'username': username,
+                                             'password': password}, context)
 
 
-    return render_to_response('login.html',{'errors':errors}, context)
-
+@login_required
 def user_logout(request):
-    context = RequestContext(request)
-
-    if request.user.is_authenticated():
-        logout(request)
-        return HttpResponseRedirect('/ArticlesManagement/')
-    else:
-        return HttpResponse("You are not login yet")
+    logout(request)
+    return HttpResponseRedirect('/ArticlesManagement/')
 
 
 def add_article(request):
-    context = RequestContext(request)
     if request.user.is_authenticated():
         return HttpResponseRedirect('/ArticlesManagement/add_new_article')
     else:
         return HttpResponse("You are not login yet")
 
 
-@csrf_protect
+@login_required
 def add_new_article(request):
     context = RequestContext(request)
 
@@ -103,20 +112,18 @@ def add_new_article(request):
         if article_form.is_valid():
             article = article_form.save(commit=False)
             article.created_date = timezone.now()
+            article.creator_id = request.user.id
             article.save()
             return HttpResponseRedirect('/ArticlesManagement/')
-
 
     else:
         article_form = ArticleForm()
 
-    return render_to_response('add_new_article.html', {'article_form' : article_form}, context)
+    return render_to_response('add_new_article.html', {'article_form': article_form}, context)
 
-def list_article(request):
-    context = RequestContext(request)
 
+@login_required
 def delete_article(request, pk):
     article = Article.objects.get(pk=pk)
     article.delete()
     return HttpResponseRedirect('/ArticlesManagement/')
-
